@@ -38,3 +38,5 @@ hs_err_pid*
 
 local-dependency/db_data/
 application.yml
+/.idea/
+/.idea/
