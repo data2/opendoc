@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <artifactId>opendoc-manager</artifactId>
+    <groupId>com.data2.opendoc.manager</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <modules>
+        <module>opendoc-rest-controller</module>
+        <module>opendoc-server-api</module>
+        <module>opendoc-server</module>
+        <module>opendoc-dubbo-automock</module>
+    </modules>
+
+    <properties>
+        <api-common.version>1.0.6-SNAPSHOT</api-common.version>
+        <server-common.version>1.0.5-SNAPSHOT</server-common.version>
+        <test-common.version>1.0.4-SNAPSHOT</test-common.version>
+        <misc-generator.version>1.0.5-SNAPSHOT</misc-generator.version>
+        <generator-common.version>1.0.4-SNAPSHOT</generator-common.version>
+        <dubbo-light.version>2.7.3.1-SNAPSHOT</dubbo-light.version>
+        <powermock.versions>2.0.2</powermock.versions>
+        <mapstruct.version>1.2.0.Final</mapstruct.version>
+        <middleware.version>1.1.0-SNAPSHOT</middleware.version>
+        <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.5.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+</project>
