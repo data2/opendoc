@@ -8,19 +8,14 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("user")
-public class User {
+@TableName("article")
+public class Article {
     @TableId(type = IdType.AUTO)
     private Long id;
-    private String userName;
-    private String nickName;
-    private String password;
-    private String email;
-    private String phone;
-    private Integer level;
+    private String userId;
+    private String title;
+    private String content;
     private Date createdAt;
+    private Integer isPublic;
 
-    public User(String userName){
-        this.userName = userName;
-    }
 }
