@@ -13,9 +13,10 @@ public class Discussion {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
+    private String nickName;
     private Long articleId;
     private String content;
-    private Integer up;
+    private Integer ups;
     private Date createdAt;
 
 }
