@@ -17,28 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
  * @author auto-generated
  * @date 2024/11/16
  */
-@RestController(value = "discussion")
+@RestController(value = "")
 public class DiscussionController {
 
     @Autowired
     private DiscussionMapper discussionMapper;
 
-    @GetMapping("selectById")
+    @GetMapping("selectDiscussionById")
     public Discussion selectById(Integer id) {
         return discussionMapper.selectById(id);
     }
 
-    @GetMapping("updateById")
+    @GetMapping("updateDiscussionById")
     public Boolean updateById(Discussion discussion) {
         return discussionMapper.updateById(discussion)==1;
     }
 
-    @GetMapping("deleteById")
+    @GetMapping("deleteDiscussionById")
     public Boolean deleteById(Integer id) {
         return discussionMapper.deleteById(id)==1;
     }
 
-    @GetMapping("selectPage")
+    @GetMapping("selectDiscussionPage")
     public IPage<Discussion> selectPage(Page page, Discussion discussion) {
         if (page == null){
             page = new Page(1,10);
@@ -53,7 +53,7 @@ public class DiscussionController {
         if (discussion.getArticleId() != null) {
             discussionQueryWrapper.lambda().eq(Discussion::getArticleId, discussion.getArticleId());
         }
-        discussionQueryWrapper.orderByDesc("createdAt");
+        discussionQueryWrapper.orderByDesc("created_at");
         return discussionMapper.selectPage(page, discussionQueryWrapper);
     }
 }

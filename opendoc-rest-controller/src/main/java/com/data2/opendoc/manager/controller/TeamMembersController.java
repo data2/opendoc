@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.data2.opendoc.manager.server.domain.TeamMembers;
 import com.data2.opendoc.manager.server.domain.Teams;
 import com.data2.opendoc.manager.server.mapper.TeamMembersMapper;
-import com.data2.opendoc.manager.server.mapper.teamMembersMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,28 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
  * @author auto-generated
  * @date 2024/11/16
  */
-@RestController(value = "teammembers")
+@RestController(value = "")
 public class TeamMembersController {
 
     @Autowired
     private TeamMembersMapper teamMembersMapper;
 
-    @GetMapping("selectById")
+    @GetMapping("selectTeammembersById")
     public TeamMembers selectById(Integer id) {
         return teamMembersMapper.selectById(id);
     }
 
-    @GetMapping("updateById")
+    @GetMapping("updateTeammembersById")
     public Boolean updateById(TeamMembers teamMembers) {
         return teamMembersMapper.updateById(teamMembers)==1;
     }
 
-    @GetMapping("deleteById")
+    @GetMapping("deleteTeammembersById")
     public Boolean deleteById(Integer id) {
         return teamMembersMapper.deleteById(id)==1;
     }
 
-    @GetMapping("selectPage")
+    @GetMapping("selectTeammembersPage")
     public IPage<Teams> selectPage(Page page, TeamMembers teamMembers) {
         if (page == null){
             page = new Page(1,10);
@@ -58,7 +57,7 @@ public class TeamMembersController {
         if (teamMembers.getUserId() != null) {
             teamsQueryWrapper.lambda().eq(TeamMembers::getUserId, teamMembers.getUserId());
         }
-        teamsQueryWrapper.orderByDesc("joinedAt");
+        teamsQueryWrapper.orderByDesc("joined_at");
         return teamMembersMapper.selectPage(page, teamsQueryWrapper);
     }
 }

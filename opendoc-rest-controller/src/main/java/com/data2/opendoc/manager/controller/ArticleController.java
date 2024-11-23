@@ -22,28 +22,28 @@ import java.util.List;
  * @author auto-generated
  * @date 2024/11/16
  */
-@RestController(value = "article")
+@RestController(value = "")
 public class ArticleController {
 
     @Autowired
     private ArticleMapper articleMapper;
 
-    @GetMapping("selectById")
+    @GetMapping("selectArticleById")
     public Article selectById(Integer id) {
         return articleMapper.selectById(id);
     }
 
-    @GetMapping("updateById")
+    @GetMapping("updateArticleById")
     public Boolean updateById(Article article) {
         return articleMapper.updateById(article)==1;
     }
 
-    @GetMapping("deleteById")
+    @GetMapping("deleteArticleById")
     public Boolean deleteById(Integer id) {
         return articleMapper.deleteById(id)==1;
     }
 
-    @GetMapping("selectPage")
+    @GetMapping("selectArticlePage")
     public IPage<Article> selectPage(Page page, Article article) {
         if (page == null){
             page = new Page(1,10);
@@ -55,10 +55,10 @@ public class ArticleController {
         if (StringUtils.isNotEmpty(article.getTitle())){
             articleQueryWrapper.lambda().like(Article::getTitle,article.getTitle());
         }
-        if (StringUtils.isNotEmpty(article.getUserId())) {
+        if (article.getUserId() !=null) {
             articleQueryWrapper.lambda().eq(Article::getUserId, article.getUserId());
         }
-        articleQueryWrapper.orderByDesc("createdAt");
+        articleQueryWrapper.orderByDesc("created_at");
         return articleMapper.selectPage(page, articleQueryWrapper);
     }
 }

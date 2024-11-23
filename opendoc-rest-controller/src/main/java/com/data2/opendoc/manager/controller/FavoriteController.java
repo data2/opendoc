@@ -17,28 +17,28 @@ import org.springframework.web.bind.annotation.RestController;
  * @author auto-generated
  * @date 2024/11/16
  */
-@RestController(value = "article")
+@RestController(value = "")
 public class FavoriteController {
 
     @Autowired
     private FavoriteMapper favoriteMapper;
 
-    @GetMapping("selectById")
+    @GetMapping("selectFavoriteById")
     public Favorite selectById(Integer id) {
         return favoriteMapper.selectById(id);
     }
 
-    @GetMapping("updateById")
+    @GetMapping("updateFavoriteById")
     public Object updateById(Favorite favorite) {
         return favoriteMapper.updateById(favorite);
     }
 
-    @GetMapping("deleteById")
+    @GetMapping("deleteFavoriteById")
     public Boolean deleteById(Integer id) {
         return favoriteMapper.deleteById(id)==1;
     }
 
-    @GetMapping("selectPage")
+    @GetMapping("selectFavoritePage")
     public IPage<Favorite> selectPage(Page page, Favorite favorite) {
         if (page == null){
             page = new Page(1,10);
@@ -53,7 +53,7 @@ public class FavoriteController {
         if (favorite.getArticleId() != null) {
             favoriteQueryWrapper.lambda().eq(Favorite::getArticleId, favorite.getArticleId());
         }
-        favoriteQueryWrapper.orderByDesc("createdAt");
+        favoriteQueryWrapper.orderByDesc("created_at");
         return favoriteMapper.selectPage(page, favoriteQueryWrapper);
     }
 }

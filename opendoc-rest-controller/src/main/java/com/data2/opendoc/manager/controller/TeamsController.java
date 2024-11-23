@@ -14,28 +14,28 @@ import org.springframework.web.bind.annotation.RestController;
  * @author auto-generated
  * @date 2024/11/16
  */
-@RestController(value = "teams")
+@RestController(value = "")
 public class TeamsController {
 
     @Autowired
     private TeamsMapper teamsMapper;
 
-    @GetMapping("selectById")
+    @GetMapping("selectTeamsById")
     public Teams selectById(Integer id) {
         return teamsMapper.selectById(id);
     }
 
-    @GetMapping("updateById")
+    @GetMapping("updateTeamsById")
     public Boolean updateById(Teams teams) {
         return teamsMapper.updateById(teams)==1;
     }
 
-    @GetMapping("deleteById")
+    @GetMapping("deleteTeamsById")
     public Boolean deleteById(Integer id) {
         return teamsMapper.deleteById(id)==1;
     }
 
-    @GetMapping("selectPage")
+    @GetMapping("selectTeamsPage")
     public IPage<Teams> selectPage(Page page, Teams teams) {
         if (page == null){
             page = new Page(1,10);
@@ -50,7 +50,7 @@ public class TeamsController {
         if (teams.getId() != null) {
             teamsQueryWrapper.lambda().eq(Teams::getId, teams.getId());
         }
-        teamsQueryWrapper.orderByDesc("createdAt");
+        teamsQueryWrapper.orderByDesc("created_at");
         return teamsMapper.selectPage(page, teamsQueryWrapper);
     }
 }

@@ -24,17 +24,17 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @GetMapping("selectById")
+    @GetMapping("selectUserById")
     public User selectById(Integer id) {
         return userMapper.selectById(id);
     }
 
-    @GetMapping("updateById")
+    @GetMapping("updateUserById")
     public Object updateById(User user) {
         return userMapper.updateById(user);
     }
 
-    @GetMapping("selectPage")
+    @GetMapping("selectUserPage")
     public IPage<User> selectPage(Page page, User user) {
         if (page == null){
             page = new Page(1,10);
@@ -49,7 +49,7 @@ public class UserController {
         if (StringUtils.isNotEmpty(user.getPhone())) {
             articleQueryWrapper.lambda().eq(User::getPhone, user.getPhone());
         }
-        articleQueryWrapper.orderByDesc("createdAt");
+        articleQueryWrapper.orderByDesc("created_at");
         return userMapper.selectPage(page, articleQueryWrapper);
     }
 
