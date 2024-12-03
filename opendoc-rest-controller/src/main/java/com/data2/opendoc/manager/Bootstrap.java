@@ -19,8 +19,8 @@ public class Bootstrap {
     public static void main(String[] args) {
         try {
             SpringApplication.run(Bootstrap.class, args);
-            log.info("Swagger-UI: http://127.0.0.1:8080/opendoc/swagger-ui.html");
-            log.info("应用测试请求: http://127.0.0.1:8080/opendoc/test");
+            log.info("Swagger-UI: http://127.0.0.1:8888/opendoc/swagger-ui.html");
+            log.info("应用测试请求: http://127.0.0.1:8888/opendoc/test");
         } catch (Exception e) {
             log.error("service start failed, cause:{}", Throwables.getStackTraceAsString(e));
         }

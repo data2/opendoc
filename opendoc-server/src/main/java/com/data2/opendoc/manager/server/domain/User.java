@@ -20,7 +20,7 @@ public class User {
     private Integer level;
     private Date createdAt;
 
-    public User(String userName){
-        this.userName = userName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

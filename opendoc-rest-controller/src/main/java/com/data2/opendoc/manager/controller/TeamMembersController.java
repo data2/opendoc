@@ -3,13 +3,19 @@ package com.data2.opendoc.manager.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.data2.opendoc.manager.aop.filter.JwtUtil;
+import com.data2.opendoc.manager.api.dto.output.Resp;
 import com.data2.opendoc.manager.server.domain.TeamMembers;
 import com.data2.opendoc.manager.server.domain.Teams;
+import com.data2.opendoc.manager.server.domain.User;
 import com.data2.opendoc.manager.server.mapper.TeamMembersMapper;
+import com.data2.opendoc.manager.server.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author auto-generated
@@ -59,5 +65,19 @@ public class TeamMembersController {
         }
         teamsQueryWrapper.orderByDesc("joined_at");
         return teamMembersMapper.selectPage(page, teamsQueryWrapper);
+    }
+
+    @Autowired
+    UserMapper userMapper;
+    @GetMapping("selectTeamByMemberId")
+    public Resp<List> selectTeamByMemberId() {
+        User user = JwtUtil.getCurrentUsername();
+        if (user !=null){
+            QueryWrapper<TeamMembers> teamQ = new QueryWrapper<>();
+            teamQ.eq("user_id", user.getId());
+            return new Resp<List>().ok(teamMembersMapper.selectList(teamQ));
+        }else{
+            return  Resp.fail("未登录");
+        }
     }
 }

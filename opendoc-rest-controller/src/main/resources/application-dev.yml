@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/opendoc?serverTimezone=UTC&useSSL=false&autoReconnect=true&rewriteBatchedStatements=true&allowMultiQueries=true&useAffectedRows=true
+    url: jdbc:mysql://localhost:3306/opendoc?serverTimezone=UTC&useSSL=false&autoReconnect=true&rewriteBatchedStatements=true&allowMultiQueries=true&useAffectedRows=true&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,3 +27,5 @@ mybatis-plus:
 
 
 
+cookieDomain: localhost
+officialEmail: xagent@126.com, test@126.com

@@ -15,6 +15,9 @@ public class Article {
     private Long userId;
     private String nickName;
     private String title;
+    private String description;
+    private String tag;
+    private Long teamId;
     private String content;
     private Date createdAt;
     private Integer isPublic;

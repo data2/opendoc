@@ -11,6 +11,7 @@ import java.util.Date;
 @TableName("team_members")
 public class TeamMembers {
     @TableId(type = IdType.AUTO)
+    private Long id;
     private Long teamId;
     private String teamName;
     private Long userId;
