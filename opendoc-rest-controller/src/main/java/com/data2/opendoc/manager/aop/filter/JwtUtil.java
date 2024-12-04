@@ -75,4 +75,9 @@ public class JwtUtil {
     public static void clearCurrentUsername() {
         currentUsername.remove();
     }
+
+    //
+    public static void expire(String token) {
+        extractClaims(token).setExpiration(new Date());
+    }
 }

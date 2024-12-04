@@ -59,6 +59,7 @@ public class JwtFilter implements javax.servlet.Filter {
             QueryWrapper<User> query = new QueryWrapper<>();
             query.eq("email", username);
             User user = userMapper.selectOne(query);
+            user.setPassword(jwtToken);
             JwtUtil.setCurrentUsername(user);
             chain.doFilter(request, response);
             // 清除ThreadLocal中的信息（可选，但推荐在请求结束时清除）

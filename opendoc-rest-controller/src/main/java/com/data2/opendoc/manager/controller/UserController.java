@@ -71,14 +71,19 @@ public class UserController {
         return userMapper.selectPage(page, articleQueryWrapper);
     }
 
-    @GetMapping("regist")
-    public Boolean regist(User user) {
+    @PostMapping("regist")
+    public Resp<Boolean> regist(User user) {
         if (user== null || StringUtils.isAnyEmpty(user.getPassword(),user.getNickName(),user.getEmail())){
-            return false;
+            return Resp.fail( "传参为空");
         }
         user.setCreatedAt(new Date());
         user.setLevel(0);
-        return userMapper.insert(user) == 1;
+        return new Resp<Boolean>().ok(userMapper.insert(user) == 1);
+    }
+    @PostMapping("logout")
+    public Resp<Boolean> logout() {
+        JwtUtil.expire(JwtUtil.getCurrentUsername().getPassword());
+        return new Resp<Boolean>().ok(true);
     }
     @PostMapping("login")
     public Resp<Boolean> login(@RequestBody  User user, HttpServletResponse response) {
