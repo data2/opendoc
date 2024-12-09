@@ -3,6 +3,7 @@ package com.data2.opendoc.manager.aop.filter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.data2.opendoc.manager.server.domain.User;
 import com.data2.opendoc.manager.server.mapper.UserMapper;
+import com.google.common.collect.Lists;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,10 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.List;
+
 @Component
 public class JwtFilter implements javax.servlet.Filter {
 
-    private static final String LOGIN_URL = "/opendoc/login";
+    private static final List<String> UNCHECK_URL = Lists.newArrayList("/opendoc/login","/opendoc/searchArticlePage","/opendoc/selectArticleById"
+            ,"/opendoc/selectArticlePage","/opendoc/selectDiscussionPage");
 
     @Autowired
     private UserMapper userMapper;
@@ -38,7 +42,7 @@ public class JwtFilter implements javax.servlet.Filter {
         String requestURI = httpRequest.getRequestURI();
 
         // 检查是否是登录请求
-        if (LOGIN_URL.equals(requestURI)) {
+        if (UNCHECK_URL.contains(requestURI)) {
             // 如果是登录请求，直接放行
             chain.doFilter(request, response);
             return;
@@ -51,8 +55,14 @@ public class JwtFilter implements javax.servlet.Filter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwtToken = URLDecoder.decode(authorizationHeader.substring(7));
-            Claims claims = JwtUtil.extractClaims(jwtToken);
-            username = claims.getSubject();
+            try {
+                Claims claims = JwtUtil.extractClaims(jwtToken);
+                username = claims.getSubject();
+            }catch (Exception e){
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.getWriter().write("Unauthorized");
+            }
+
         }
 
         if (username != null && JwtUtil.validateToken(jwtToken, username)) {

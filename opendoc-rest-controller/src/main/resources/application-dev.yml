@@ -27,5 +27,5 @@ mybatis-plus:
 
 
 
-cookieDomain: localhost
+cookieDomain: shellbook.com.cn
 officialEmail: xagent@126.com, test@126.com

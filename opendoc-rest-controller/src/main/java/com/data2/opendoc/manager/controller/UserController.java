@@ -35,8 +35,8 @@ public class UserController {
     private UserMapper userMapper;
 
     @GetMapping("selectUser")
-    public User selectById() {
-        return userMapper.selectById(JwtUtil.getCurrentUsername().getId());
+    public Resp<User> selectUser() {
+        return new Resp<>().ok(userMapper.selectById(JwtUtil.getCurrentUsername().getId()));
     }
 
     @GetMapping("selectUserById")
@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @PostMapping("regist")
-    public Resp<Boolean> regist(User user) {
+    public Resp<Boolean> regist(@RequestBody User user) {
         if (user== null || StringUtils.isAnyEmpty(user.getPassword(),user.getNickName(),user.getEmail())){
             return Resp.fail( "传参为空");
         }

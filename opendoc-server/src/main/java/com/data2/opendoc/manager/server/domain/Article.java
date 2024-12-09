@@ -20,10 +20,11 @@ public class Article {
     private Long teamId;
     private String content;
     private Date createdAt;
-    private Integer isPublic;
+    private Integer isPublic;//0 私有 1 公开 2团队公开
     private Integer isOfficial;
     private Integer views;
     private Integer comments;
     private Integer ups;
+
 
 }

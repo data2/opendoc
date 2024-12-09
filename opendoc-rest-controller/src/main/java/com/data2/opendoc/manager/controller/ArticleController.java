@@ -1,5 +1,6 @@
 package com.data2.opendoc.manager.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -7,8 +8,10 @@ import com.data2.opendoc.manager.aop.filter.JwtUtil;
 import com.data2.opendoc.manager.api.dto.output.Resp;
 import com.data2.opendoc.manager.config.DocConfig;
 import com.data2.opendoc.manager.server.domain.Article;
+import com.data2.opendoc.manager.server.domain.TeamMembers;
 import com.data2.opendoc.manager.server.domain.User;
 import com.data2.opendoc.manager.server.mapper.ArticleMapper;
+import com.data2.opendoc.manager.server.mapper.TeamMembersMapper;
 import com.data2.opendoc.manager.server.mapper.UserMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +39,27 @@ public class ArticleController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private TeamMembersMapper teamMembersMapper;
+
     @GetMapping("selectArticleById")
     public Resp<Article> selectById(Long id) {
         Map<String,Object> map = new HashMap<>();
         Article article = articleMapper.selectById(id);
         map.put("article", article);
+        if (article.getIsPublic() == 0){
+            if (JwtUtil.getCurrentUsername().getId()!=article.getUserId()){
+                return Resp.fail("无权限");
+            }
+        }
+        if (article.getIsPublic() == 2){
+            QueryWrapper<TeamMembers> query = new QueryWrapper<>();
+            query.eq("user_id",JwtUtil.getCurrentUsername().getId());
+            query.eq("team_id",article.getTeamId());
+            if (teamMembersMapper.selectList(query)==null){
+                return Resp.fail("无权限");
+            }
+        }
         User user = userMapper.selectById(article.getUserId());
         user.setPassword(null);
         user.setPhone(null);
@@ -59,8 +78,8 @@ public class ArticleController {
         return articleMapper.deleteById(id)==1;
     }
 
-    @GetMapping("selectArticlePage")
-    public Resp<IPage> selectPage(Page page, Article article) {
+    @PostMapping("selectArticlePage")
+    public Resp<IPage> selectPage(Page page, @RequestBody Article article) {
         if (page == null){
             page = new Page(1,10);
         }else{
@@ -68,11 +87,46 @@ public class ArticleController {
         }
 
         QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
-        if (article.getUserId() !=null) {
-            articleQueryWrapper.lambda().eq(Article::getUserId, article.getUserId());
+        if (article.getIsPublic() != null && article.getIsPublic() != 1){
+            if (article.getUserId() !=null) {
+                articleQueryWrapper.lambda().eq(Article::getUserId, article.getUserId());
+            }
+            if (article.getTeamId() !=null) {
+                articleQueryWrapper.lambda().eq(Article::getTeamId, article.getTeamId());
+            }
         }
-        if (article.getTeamId() !=null) {
-            articleQueryWrapper.lambda().eq(Article::getTeamId, article.getTeamId());
+        if (article.getIsPublic() != null){
+            articleQueryWrapper.lambda().like(Article::getIsPublic,article.getIsPublic());
+        }
+        if (StringUtils.isNotEmpty(article.getTitle())){
+            articleQueryWrapper.lambda().like(Article::getTitle,article.getTitle());
+        }
+        if (StringUtils.isNotEmpty(article.getDescription())){
+            articleQueryWrapper.lambda().like(Article::getDescription,article.getDescription());
+        }
+        articleQueryWrapper.orderByDesc("created_at");
+        return new Resp<IPage>().ok(articleMapper.selectPage(page, articleQueryWrapper));
+    }
+
+    @PostMapping("searchArticlePage")
+    public Resp<IPage> searchArticlePage(Page page, @RequestBody Article article) {
+        if (page == null){
+            page = new Page(1,10);
+        }else{
+            page.setSize(10);
+        }
+
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        if (article.getIsPublic() != null && article.getIsPublic() != 1){
+            if (article.getUserId() !=null) {
+                articleQueryWrapper.lambda().eq(Article::getUserId, article.getUserId());
+            }
+            if (article.getTeamId() !=null) {
+                articleQueryWrapper.lambda().eq(Article::getTeamId, article.getTeamId());
+            }
+        }
+        if (article.getIsPublic() != null){
+            articleQueryWrapper.lambda().like(Article::getIsPublic,article.getIsPublic());
         }
         if (StringUtils.isNotEmpty(article.getTitle())){
             articleQueryWrapper.lambda().like(Article::getTitle,article.getTitle());
