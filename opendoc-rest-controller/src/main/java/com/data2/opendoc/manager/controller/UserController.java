@@ -71,10 +71,15 @@ public class UserController {
         return userMapper.selectPage(page, articleQueryWrapper);
     }
 
-    @PostMapping("regist")
+    @PostMapping("registuser")
     public Resp<Boolean> regist(@RequestBody User user) {
         if (user== null || StringUtils.isAnyEmpty(user.getPassword(),user.getNickName(),user.getEmail())){
             return Resp.fail( "传参为空");
+        }
+
+        IPage<User> alread = selectPage(null, user);
+        if (alread!=null && alread.getRecords().size()>0){
+            return Resp.fail( "邮箱已经被注册，请更换邮箱");
         }
         user.setCreatedAt(new Date());
         user.setLevel(0);
@@ -85,8 +90,8 @@ public class UserController {
         JwtUtil.expire(JwtUtil.getCurrentUsername().getPassword());
         return new Resp<Boolean>().ok(true);
     }
-    @PostMapping("login")
-    public Resp<Boolean> login(@RequestBody  User user, HttpServletResponse response) {
+    @PostMapping("loginuser")
+    public Resp<String> login(@RequestBody  User user, HttpServletResponse response) {
         if (user== null || StringUtils.isAnyEmpty(user.getPassword(),user.getEmail())){
             return Resp.fail( "传参为空");
         }
@@ -98,10 +103,7 @@ public class UserController {
             if (StringUtils.equals(user.getPassword(),queryUser.getPassword())){
                 String token = JwtUtil.generateToken(user.getEmail());
                 log.info(token);
-                Cookie cookie = new Cookie("token", URLEncoder.encode(token));
-                cookie.setDomain(docConfig.getCookieDomain());
-                response.addCookie(cookie);
-                return new Resp<Boolean>().ok(true);
+                return new Resp<String>().ok(token);
             }
         }
         return Resp.fail("账号登陆失败");
