@@ -11,8 +11,7 @@ import java.util.List;
 @Slf4j
 @Data
 public class DocConfig {
-    @Value("${cookieDomain}")
-    private String cookieDomain;
+
     @Value("${officialEmail}")
     private List<String> officialEmail;
 }
