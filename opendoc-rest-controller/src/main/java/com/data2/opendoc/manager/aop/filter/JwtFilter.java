@@ -23,7 +23,7 @@ import java.util.List;
 public class JwtFilter implements javax.servlet.Filter {
 
     private static final List<String> UNCHECK_URL = Lists.newArrayList("/opendoc/loginuser","/opendoc/registuser",
-            "/opendoc/searchArticlePage","/opendoc/selectArticleById"
+            "/opendoc/searchArticleHomePage", "/opendoc/searchArticlePage","/opendoc/selectArticleById"
             ,"/opendoc/selectArticlePage","/opendoc/selectDiscussionPage");
 
     @Autowired

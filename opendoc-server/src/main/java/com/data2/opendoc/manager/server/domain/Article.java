@@ -21,7 +21,7 @@ public class Article {
     private String content;
     private Date createdAt;
     private Integer isPublic;//0 私有 1 公开 2团队公开
-    private Integer isOfficial;
+    private Integer isOfficial;//0 非官方 1 官方
     private Integer views;
     private Integer comments;
     private Integer ups;

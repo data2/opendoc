@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("favorite")
+@TableName("user_favorite")
 public class Favorite {
     @TableId(type = IdType.AUTO)
     private Long id;
